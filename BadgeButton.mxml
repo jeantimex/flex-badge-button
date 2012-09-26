@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BadgeButton.mxml 
+ Usage: <ns:BadgeButton badge="7" /> 
+-->
+<mx:Button 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:mx="library://ns.adobe.com/flex/mx" 
+	creationComplete="onCreationCompleted()"
+>
+	<fx:Declarations>
+		<mx:Box id="badgeIcon" width="{badgeNum.width + 8}" height="18" visible="{badge > 0}" 
+				backgroundColor="0xFF0000" cornerRadius="10"  
+				borderColor="0xFFFFFF" borderStyle="solid" borderThickness="2"
+				horizontalAlign="center" verticalAlign="middle" 
+				paddingTop="0" paddingLeft="4" paddingRight="4" paddingBottom="0" 
+				dropShadowEnabled="true" shadowDistance="1"
+		>
+			<mx:Label id="badgeNum" text="{badge}" color="0xFFFFFF" textAlign="center" width="100%" fontWeight="normal" fontSize="10" />
+		</mx:Box>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.mx_internal;
+			
+			public namespace mx_internal = "http://www.adobe.com/2006/flex/mx/internal";
+			
+			private var _badge:Number = 0;
+			
+			[Bindable] public function get badge(): Number {
+				return _badge;
+			}
+			
+			public function set badge(value:Number):void {
+				_badge = value;
+			}
+			
+			override protected function createChildren():void {
+				super.createChildren();
+				addChild(badgeIcon);
+			}
+			
+			private function onCreationCompleted(): void {
+				putBadgeOnTop();
+				badgeIcon.x = this.width - badgeIcon.width / 2;
+				badgeIcon.y = -badgeIcon.height / 2;
+			}
+			
+			private function putBadgeOnTop(): void {
+				if (badgeIcon) {
+					setChildIndex(badgeIcon, numChildren - 1);
+				}
+			}
+			
+			override mx_internal function layoutContents(unscaledWidth:Number, unscaledHeight:Number, offset:Boolean):void {
+				super.mx_internal::layoutContents(unscaledWidth, unscaledHeight, offset);
+				putBadgeOnTop();
+			}
+			
+		]]>
+	</fx:Script>
+	
+</mx:Button>
